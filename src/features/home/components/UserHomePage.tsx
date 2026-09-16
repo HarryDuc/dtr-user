@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from "react";
 import {
   UserNavbar,
   SubmissionForm,
@@ -6,142 +6,158 @@ import {
   FeedbackSection,
   Footer,
   CrownIcon,
-} from '@/components'
-import { categories, pointBreakdown } from '@/data/dtrData'
-import { CURRENT_USER_NAME } from '@/data/currentUser'
-import { useTrainingSessions } from '@/context/TrainingSessionsContext'
-import { useSubmissions } from '@/context/SubmissionsContext'
-import type { Category } from '@/types/dtr'
-import { LeaderboardPodium, LeaderboardList } from './LeaderboardSection'
-import HowToEarnSection from './HowToEarnSection'
-import CategoryCard from './CategoryCard'
-import PointsProgressSection from './PointsProgressSection'
+} from "@/components";
+import { categories, pointBreakdown } from "@/data/dtrData";
+import { CURRENT_USER_NAME } from "@/data/currentUser";
+import { useTrainingSessions } from "@/context/TrainingSessionsContext";
+import { useSubmissions } from "@/context/SubmissionsContext";
+import type { Category } from "@/types/dtr";
+import { LeaderboardPodium, LeaderboardList } from "./LeaderboardSection";
+import HowToEarnSection from "./HowToEarnSection";
+import CategoryCard from "./CategoryCard";
+import PointsProgressSection from "./PointsProgressSection";
 
 type CheckinNotice = {
-  title: string
-  alreadyDone: boolean
-}
+  title: string;
+  alreadyDone: boolean;
+};
 
-const totalPoints = 128
-const nextTierAt = 160
-const tierName = 'Hạng Kim Cương'
+const totalPoints = 128;
+const nextTierAt = 160;
+const tierName = "Hạng Kim Cương";
 
 export default function UserHomePage() {
-  const { submissions, users, addSubmission } = useSubmissions()
-  const [openCategory, setOpenCategory] = useState<Category | null>(null)
-  const [checkinNotice, setCheckinNotice] = useState<CheckinNotice | null>(null)
-  const [showQrScanner, setShowQrScanner] = useState(false)
-  const { findSession } = useTrainingSessions()
+  const { submissions, users, addSubmission } = useSubmissions();
+  const [openCategory, setOpenCategory] = useState<Category | null>(null);
+  const [checkinNotice, setCheckinNotice] = useState<CheckinNotice | null>(
+    null,
+  );
+  const [showQrScanner, setShowQrScanner] = useState(false);
+  const { findSession } = useTrainingSessions();
 
   function processCheckinCode(code: string) {
-    const session = findSession(code)
-    const title = session?.title ?? 'Buổi Training'
-    const storageKey = `dtr-checkin-done-${code}`
-    const alreadyDone = localStorage.getItem(storageKey) === '1'
+    const session = findSession(code);
+    const title = session?.title ?? "Buổi Training";
+    const storageKey = `dtr-checkin-done-${code}`;
+    const alreadyDone = localStorage.getItem(storageKey) === "1";
 
     if (!alreadyDone) {
-      localStorage.setItem(storageKey, '1')
+      localStorage.setItem(storageKey, "1");
       addSubmission({
         userName: CURRENT_USER_NAME,
-        categoryLabel: 'Training / Kick off',
+        categoryLabel: "Training / Kick off",
         description: `Điểm danh QR — ${title}`,
-        date: new Date().toLocaleDateString('vi-VN'),
+        date: new Date().toLocaleDateString("vi-VN"),
         points: 1,
-        status: 'approved',
-      })
+        status: "approved",
+      });
     }
 
-    setCheckinNotice({ title, alreadyDone })
+    setCheckinNotice({ title, alreadyDone });
   }
 
   function extractCheckinCode(rawValue: string) {
     try {
-      const url = new URL(rawValue)
-      const code = url.searchParams.get('checkin')
-      if (code) return code
+      const url = new URL(rawValue);
+      const code = url.searchParams.get("checkin");
+      if (code) return code;
     } catch {
       // Not a URL — treat the whole string as the session code
     }
-    return rawValue.trim()
+    return rawValue.trim();
   }
 
   function handleQrDetected(rawValue: string) {
-    setShowQrScanner(false)
-    const code = extractCheckinCode(rawValue)
-    if (code) processCheckinCode(code)
+    setShowQrScanner(false);
+    const code = extractCheckinCode(rawValue);
+    if (code) processCheckinCode(code);
   }
 
   const fullRanking = useMemo(() => {
-    const totals = new Map<string, number>()
+    const totals = new Map<string, number>();
     for (const s of submissions) {
-      if (s.status !== 'approved') continue
-      totals.set(s.userName, (totals.get(s.userName) ?? 0) + s.points)
+      if (s.status !== "approved") continue;
+      totals.set(s.userName, (totals.get(s.userName) ?? 0) + s.points);
     }
     return users
-      .filter((u) => u.role === 'user')
-      .map((u) => ({ name: u.name, points: totals.get(u.name) ?? 0, avatarUrl: u.avatarUrl }))
-      .sort((a, b) => b.points - a.points)
-  }, [submissions, users])
+      .filter((u) => u.role === "user")
+      .map((u) => ({
+        name: u.name,
+        points: totals.get(u.name) ?? 0,
+        avatarUrl: u.avatarUrl,
+      }))
+      .sort((a, b) => b.points - a.points);
+  }, [submissions, users]);
 
-  const podium = fullRanking.slice(0, 3)
-  const restRanking = fullRanking.slice(3)
+  const podium = fullRanking.slice(0, 3);
+  const restRanking = fullRanking.slice(3);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const code = params.get('checkin')
-    if (!code) return
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get("checkin");
+    if (!code) return;
 
-    processCheckinCode(code)
+    processCheckinCode(code);
 
-    const url = new URL(window.location.href)
-    url.searchParams.delete('checkin')
-    window.history.replaceState({}, '', url.toString())
+    const url = new URL(window.location.href);
+    url.searchParams.delete("checkin");
+    window.history.replaceState({}, "", url.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   function handleSubmit(data: {
-    optionLabel: string
-    points: number
-    description: string
-    date: string
-    link?: string
-    imageDataUrl?: string
+    optionLabel: string;
+    points: number;
+    description: string;
+    date: string;
+    link?: string;
+    imageDataUrl?: string;
   }) {
-    if (!openCategory) return
+    if (!openCategory) return;
     const formattedDate = data.date
-      ? new Date(data.date).toLocaleDateString('vi-VN')
-      : new Date().toLocaleDateString('vi-VN')
+      ? new Date(data.date).toLocaleDateString("vi-VN")
+      : new Date().toLocaleDateString("vi-VN");
 
     const fullCategoryTitle = openCategory.locationLabels?.length
-      ? `${openCategory.title} ${openCategory.locationLabels.join(', ')}`
-      : openCategory.title
+      ? `${openCategory.title} ${openCategory.locationLabels.join(", ")}`
+      : openCategory.title;
 
     addSubmission({
       userName: CURRENT_USER_NAME,
-      categoryLabel: data.optionLabel === 'Điểm' ? fullCategoryTitle : data.optionLabel,
-      description: data.description || '—',
+      categoryLabel:
+        data.optionLabel === "Điểm" ? fullCategoryTitle : data.optionLabel,
+      description: data.description || "—",
       date: formattedDate,
       points: data.points,
-      status: 'pending',
+      status: "pending",
       link: data.link || undefined,
       imageDataUrl: data.imageDataUrl,
-    })
-    setOpenCategory(null)
+    });
+    setOpenCategory(null);
   }
 
   return (
     <div className="min-h-svh bg-[var(--bg-1)] pb-4">
       {/* Checkin Notice */}
       {checkinNotice && (
-        <div className="mx-4 mt-4 flex items-center justify-between gap-3 rounded-lg bg-[var(--gold)]/[0.1] border border-[var(--gold)]/[0.3] px-4 py-3 text-sm text-[var(--text-primary)]">
+        <div className="mx-4 mt-4 flex items-center justify-between gap-3 rounded-lg bg-[var(--gold)]/[0.1] border border-[var(--gold)]/[0.3] px-4 py-3 text-sm text-[var(--text-primary)] sm:mx-6">
           <div>
             {checkinNotice.alreadyDone ? (
               <>
-                Bạn đã điểm danh <b className="text-[var(--gold-bright)]">{checkinNotice.title}</b> trước đó rồi.
+                Bạn đã điểm danh{" "}
+                <b className="text-[var(--gold-bright)]">
+                  {checkinNotice.title}
+                </b>{" "}
+                trước đó rồi.
               </>
             ) : (
               <>
-                ✓ Điểm danh thành công <b className="text-[var(--gold-bright)]">{checkinNotice.title}</b> — đã cộng <b className="text-[var(--gold-bright)]">+1 điểm DTR</b>
+                ✓ Điểm danh thành công{" "}
+                <b className="text-[var(--gold-bright)]">
+                  {checkinNotice.title}
+                </b>{" "}
+                — đã cộng{" "}
+                <b className="text-[var(--gold-bright)]">+1 điểm DTR</b>
               </>
             )}
           </div>
@@ -159,47 +175,57 @@ export default function UserHomePage() {
       <UserNavbar active="home" />
 
       {/* Leaderboard Header */}
-      <div className="flex items-center justify-between gap-3 px-4 pt-6 pb-2 max-md:px-4 max-lg:px-6 max-lg:pt-8 max-lg:pb-4 lg:px-6 lg:pt-8 lg:pb-4">
-        <span className="rounded-full bg-[var(--gold)] px-4 py-1.5 text-xs font-bold tracking-wide text-[var(--on-gold)]">
-          XẾP HẠNG
-        </span>
-        <span className="flex items-center gap-1.5 text-xs font-medium text-[var(--text-muted)]">
-          <CrownIcon size={14} color="#d4af6a" />
-          Bảng vàng
-        </span>
+      <div className="gap-3 px-4 pt-6 pb-2 max-md:px-4 max-lg:px-6 max-lg:pt-8 max-lg:pb-4 lg:px-6 lg:pt-8 lg:pb-4">
+        <div className="flex items-center justify-between gap-3 max-w-3xl mx-auto">
+          <span className="rounded-full bg-[var(--gold)] px-4 py-1.5 text-xs font-bold tracking-wide text-[var(--on-gold)]">
+            XẾP HẠNG
+          </span>
+          <span className="flex items-center gap-1.5 text-xs font-medium text-[var(--text-muted)]">
+            <CrownIcon size={14} color="#d4af6a" />
+            Bảng vàng
+          </span>
+        </div>
       </div>
 
-      {/* Leaderboard Section - Responsive: full width mobile, 2-col tablet/desktop */}
-      <div className="px-4 pb-6 max-lg:px-4 max-lg:pb-8 lg:px-6 lg:pb-8">
-        {fullRanking.length === 0 ? (
-          <p className="text-sm text-[var(--text-tertiary)]">Chưa có dữ liệu xếp hạng.</p>
-        ) : (
-          <>
-            <LeaderboardPodium podium={podium} />
-            <LeaderboardList entries={restRanking} />
-          </>
-        )}
+      {/* Leaderboard Section */}
+      <div className="px-4 sm:px-6 md:px-6 lg:px-8 pb-6 md:pb-8 lg:pb-8">
+        <div className="mx-auto max-w-3xl">
+          {fullRanking.length === 0 ? (
+            <p className="text-sm text-[var(--text-tertiary)]">
+              Chưa có dữ liệu xếp hạng.
+            </p>
+          ) : (
+            <>
+              <LeaderboardPodium podium={podium} />
+              <LeaderboardList entries={restRanking} />
+            </>
+          )}
+        </div>
       </div>
 
       {/* How To Earn Section */}
       <HowToEarnSection />
 
-      {/* Categories Section - Responsive grid layout */}
-      <div className="px-4 pt-6 pb-4 max-lg:px-4 max-lg:pt-8 lg:px-6 lg:pt-8">
-        <h2 className="mb-4 text-lg font-semibold text-[var(--text-primary)] lg:text-xl">Nộp minh chứng</h2>
-        <div className="grid gap-4 max-sm:grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {categories.map((category) => (
-            <CategoryCard
-              key={category.id}
-              category={category}
-              onOpen={setOpenCategory}
-            />
-          ))}
+      {/* Categories Section */}
+      <div className="px-4 sm:px-6 md:px-6 lg:px-8 pt-6 pb-4 md:pt-8 md:pb-4 lg:pt-8 lg:pb-4">
+        <div className="mx-auto max-w-3xl">
+          <h2 className="mb-4 text-lg font-semibold text-[var(--text-primary)] lg:text-xl">
+            Nộp minh chứng
+          </h2>
+          <div className="grid gap-4 max-sm:grid-cols-1 sm:grid-cols-2 lg:grid-cols-2">
+            {categories.map((category) => (
+              <CategoryCard
+                key={category.id}
+                category={category}
+                onOpen={setOpenCategory}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Points Progress - Centered container on desktop */}
-      <div className="max-lg:px-4 max-lg:pb-6 lg:px-6 lg:pb-8">
+      {/* Points Progress */}
+      <div className="px-4 sm:px-6 md:px-6 lg:px-8 pb-6 md:pb-8 lg:pb-8">
         <div className="mx-auto max-w-3xl">
           <PointsProgressSection
             totalPoints={totalPoints}
@@ -226,8 +252,11 @@ export default function UserHomePage() {
       )}
 
       {showQrScanner && (
-        <QrScannerModal onDetected={handleQrDetected} onCancel={() => setShowQrScanner(false)} />
+        <QrScannerModal
+          onDetected={handleQrDetected}
+          onCancel={() => setShowQrScanner(false)}
+        />
       )}
     </div>
-  )
+  );
 }

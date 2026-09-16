@@ -64,7 +64,7 @@ export default function PointsProgress({ totalPoints, nextTierAt, tierName, cate
   const pointsToNextTier = nextTierAt - totalPoints
 
   return (
-    <section className="pt-6 pb-2 md:px-0 md:pt-8 md:pb-6 lg:px-0 lg:pt-8 lg:pb-6">
+    <section className="pt-6 pb-2 md:pt-8 md:pb-6 lg:pt-8 lg:pb-6">
       {/* Main Card */}
       <div className="mb-4 rounded-xl border border-[var(--hairline)] bg-[var(--surface-1)] p-5 md:mb-6 md:p-6 lg:p-8">
         {/* Header */}

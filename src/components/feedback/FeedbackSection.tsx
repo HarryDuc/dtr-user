@@ -24,7 +24,7 @@ export default function FeedbackSection() {
   }
 
   return (
-    <section className="px-4 pt-6 pb-4 md:px-6 md:pt-6 md:pb-6 lg:px-6 lg:pt-6 lg:pb-6">
+    <section className="px-4 sm:px-6 md:px-6 lg:px-8 pt-6 pb-4 md:pt-8 md:pb-6 lg:pt-8 lg:pb-6">
       <div className="mx-auto max-w-3xl rounded-xl border border-[var(--hairline)] bg-[var(--surface-1)] p-5 md:p-6 lg:p-8">
         <h2 className="mb-1 text-base font-semibold text-[var(--text-primary)] md:text-lg">
           Phản hồi & góp ý

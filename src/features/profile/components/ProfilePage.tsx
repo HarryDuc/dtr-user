@@ -27,29 +27,31 @@ export default function ProfilePage() {
       <UserNavbar active="profile" />
 
       {/* Header */}
-      <div className="px-4 pt-6 md:px-6 md:pt-8 lg:px-6 lg:pt-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-6 lg:px-0 pt-6 md:pt-8 lg:pt-8">
         <h1 className="text-xl font-semibold text-[var(--text-primary)] md:text-2xl lg:text-3xl">Hồ sơ cá nhân</h1>
         <p className="mt-1 text-sm text-[var(--text-muted)] md:text-base">Xem thành tích và cập nhật thông tin tài khoản.</p>
       </div>
 
-      {/* Tier Badge - Centered container on desktop */}
-      <div className="mx-4 mt-5 md:mx-6 md:mt-6 lg:mx-auto lg:mt-6 lg:max-w-3xl">
-        <div className="flex items-center justify-between gap-3 rounded-lg border border-[var(--hairline)] bg-[var(--surface-1)] px-4 py-3 md:px-6 md:py-4 lg:px-8 lg:py-5">
-          <div>
-            <div className="text-sm font-medium text-[var(--text-primary)] md:text-base lg:text-lg">{tierName}</div>
-            <div className="text-xs text-[var(--text-muted)] md:text-sm lg:text-base">
-              Còn <b className="text-[var(--gold-bright)]">{pointsToNextTier} điểm</b> để lên hạng
+      {/* Tier Badge */}
+      <div className="px-4 sm:px-6 md:px-6 lg:px-8 mt-5 md:mt-6 lg:mt-6">
+        <div className="mx-auto max-w-3xl">
+          <div className="flex items-center justify-between gap-3 rounded-lg border border-[var(--hairline)] bg-[var(--surface-1)] px-4 py-3 md:px-6 md:py-4 lg:px-8 lg:py-5">
+            <div>
+              <div className="text-sm font-medium text-[var(--text-primary)] md:text-base lg:text-lg">{tierName}</div>
+              <div className="text-xs text-[var(--text-muted)] md:text-sm lg:text-base">
+                Còn <b className="text-[var(--gold-bright)]">{pointsToNextTier} điểm</b> để lên hạng
+              </div>
             </div>
-          </div>
-          <div className="text-right">
-            <div className="text-2xl font-bold text-[var(--gold-bright)] md:text-3xl lg:text-4xl">{totalPoints}</div>
-            <div className="text-xs text-[var(--text-muted)] md:text-sm lg:text-base">điểm DTR</div>
+            <div className="text-right">
+              <div className="text-2xl font-bold text-[var(--gold-bright)] md:text-3xl lg:text-4xl">{totalPoints}</div>
+              <div className="text-xs text-[var(--text-muted)] md:text-sm lg:text-base">điểm DTR</div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Stats - Centered container on desktop */}
-      <div className="px-4 pt-5 md:px-6 md:pt-6 lg:px-6 lg:pt-6">
+      {/* Stats */}
+      <div className="px-4 sm:px-6 md:px-6 lg:px-8 pt-5 md:pt-6 lg:pt-6">
         <div className="mx-auto max-w-3xl">
           <ProfileStats
             totalPoints={totalPoints}
@@ -60,18 +62,20 @@ export default function ProfilePage() {
         </div>
       </div>
 
-      {/* Forms - Centered container on desktop */}
-      <div className="flex flex-col gap-4 px-4 pt-5 md:px-6 md:pt-6 lg:mx-auto lg:max-w-3xl lg:gap-6 lg:pt-6">
-        <ProfileForm
-          initialName={CURRENT_USER_NAME}
-          initialEmail="an.nguyen@dtr.vn"
-          initialPhone="0909 123 456"
-          initialBranch="Chi nhánh Hà Nội"
-          avatarUrl={avatarUrl}
-          onAvatarChange={setAvatarUrl}
-          onSave={() => {}}
-        />
-        <PasswordForm onSave={() => {}} />
+      {/* Forms */}
+      <div className="px-4 sm:px-6 md:px-6 lg:px-8 pt-5 md:pt-6 lg:pt-6">
+        <div className="mx-auto max-w-3xl flex flex-col gap-4 lg:gap-6">
+          <ProfileForm
+            initialName={CURRENT_USER_NAME}
+            initialEmail="an.nguyen@dtr.vn"
+            initialPhone="0909 123 456"
+            initialBranch="Chi nhánh Hà Nội"
+            avatarUrl={avatarUrl}
+            onAvatarChange={setAvatarUrl}
+            onSave={() => {}}
+          />
+          <PasswordForm onSave={() => {}} />
+        </div>
       </div>
 
       <Footer />

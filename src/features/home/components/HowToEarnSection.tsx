@@ -6,7 +6,7 @@ export default function HowToEarnSection() {
   ]
 
   return (
-    <section className="px-4 pt-4 md:px-6 md:pt-6 lg:px-6 lg:pt-6">
+    <section className="px-4 sm:px-6 md:px-6 lg:px-8 pt-4 md:pt-6 lg:pt-6">
       <div className="mx-auto max-w-3xl rounded-xl border border-[var(--hairline)] bg-[var(--surface-1)] p-5 md:p-6 lg:p-8">
         <h2 className="m-0 mb-4 text-base font-semibold text-[var(--text-primary)] md:text-lg">
           Cách ghi điểm
