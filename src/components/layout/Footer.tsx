@@ -6,7 +6,7 @@ const footerLinkItemClass =
 
 export default function Footer() {
   return (
-    <footer className="mt-8 border-t border-[rgba(37,99,235,0.16)] px-11 pt-12 pb-7 dark:bg-[linear-gradient(180deg,rgba(37,99,235,0.04),transparent_40%)] max-[640px]:px-5 max-[640px]:pt-10 max-[640px]:pb-6">
+    <footer className="mt-8 border-t border-[rgba(37,99,235,0.16)] px-4 sm:px-6 md:px-6 lg:px-8 pt-8 md:pt-10 lg:pt-12 pb-5 md:pb-6 lg:pb-7">
       <div className="grid grid-cols-[1.6fr_1fr_1fr_1fr] gap-8 max-[960px]:grid-cols-2 max-[640px]:grid-cols-1 max-[640px]:gap-7">
         <div>
           <BrandLogo height={34} />

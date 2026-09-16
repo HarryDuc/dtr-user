@@ -68,7 +68,7 @@ export default function CategoryCard({ category, onOpen }: CategoryCardProps) {
   const maxPoints = Math.max(...category.pointOptions.map((option) => option.points))
 
   return (
-    <div className="rounded-xl border border-[var(--hairline)] bg-[var(--surface-1)] p-4 md:p-5 lg:p-6">
+    <div className="flex flex-col rounded-xl border border-[var(--hairline)] bg-[var(--surface-1)] p-4 md:p-5 lg:p-6">
       {/* Header */}
       <div className="mb-3 flex items-start gap-3 md:mb-4">
         <div
@@ -116,9 +116,9 @@ export default function CategoryCard({ category, onOpen }: CategoryCardProps) {
         </div>
       )}
 
-      {/* Submit Button */}
+      {/* Submit Button - Always at bottom */}
       <button
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--gold)] py-2.5 text-sm font-medium text-[var(--on-gold)] transition-colors hover:bg-[var(--gold-deep)] md:py-3 md:text-base"
+        className="mt-auto flex w-full items-center justify-center gap-2 rounded-lg bg-[var(--gold)] py-2.5 text-sm font-medium text-[var(--on-gold)] transition-colors hover:bg-[var(--gold-deep)] md:py-3 md:text-base"
         type="button"
         onClick={() => onOpen(category)}
       >
