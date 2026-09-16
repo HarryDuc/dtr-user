@@ -27,7 +27,7 @@ export default function ProfilePage() {
       <UserNavbar active="profile" />
 
       {/* Header */}
-      <div className="px-4 sm:px-6 md:px-6 lg:px-8 pt-6 md:pt-8 lg:pt-8">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-6 lg:px-0 pt-6 md:pt-8 lg:pt-8">
         <h1 className="text-xl font-semibold text-[var(--text-primary)] md:text-2xl lg:text-3xl">Hồ sơ cá nhân</h1>
         <p className="mt-1 text-sm text-[var(--text-muted)] md:text-base">Xem thành tích và cập nhật thông tin tài khoản.</p>
       </div>
